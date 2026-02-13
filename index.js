@@ -14,38 +14,10 @@ app.use(express.json());
 const centroCustoRoutes = require("./modules/centro-custo/centroCusto.routes");
 
 
-let prisma;
-try {
-  const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
-
-  const adapter = new PrismaPg(pool);
-  prisma = new PrismaClient({ adapter });
-  console.log('Prisma Client initialized');
-} catch (e) {
-  console.error('Failed to initialize Prisma:', e);
-}
+// Redundant local prisma initialization removed - using centralized client instead.
 
 app.get("/", (req, res) => {
   console.log('GET / request received');
-  res.json({ message: "Backend Cultiva API is running" });
-});
-const service = require("./modules/centro-custo/centroCusto.service")
-app.post("/centro-custo", async (req, res) => {
- try {
-     // TEMPORÁRIO — depois virá do login
-     const agricultorId = "145837fc-ecec-497e-9ef5-7d8c5c4639cc";
- 
-     const centro = await service.criarCentroCusto({
-       ...req.body,
-       agricultorId
-     });
- 
-     res.status(201).json(centro);
- 
-   } catch (error) {
-     res.status(400).json({ error: error.message });
-   }
- 
   res.json({ message: "Backend Cultiva API is running" });
 });
 

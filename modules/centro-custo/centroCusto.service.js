@@ -1,4 +1,4 @@
-const prisma = require("../../prisma.config.js");
+const prisma = require("../../prisma/client");
 
 async function listarAgricultores() {
   return await prisma.agricultor.findMany();

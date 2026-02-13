@@ -3,7 +3,7 @@ POST http://localhost:3000/centro-custo
 Content-Type: application/json
 
 {
-    "nome": "Café",
-    "descricao": "Plantação de Café Norte",
+    "nome": "Milho",
+    "descricao": "Plantação de Milho",
     "agricultorId": "145837fc-ecec-497e-9ef5-7d8c5c4639cc"
 }
