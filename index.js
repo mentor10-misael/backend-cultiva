@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const movimentacaoRoutes = require("./modules/movimentacao/movimentacao.routes");
 const pg = require('pg');
 const { PrismaPg } = require('@prisma/adapter-pg');
 const { PrismaClient } = require("@prisma/client");
@@ -10,6 +11,12 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.json({ message: "Backend Cultiva API is running" });
+});
+
+app.use("/movimentacoes", movimentacaoRoutes);
 
 let prisma;
 try {

@@ -1,0 +1,20 @@
+### Teste de Sincronização (Criar Movimentação)
+POST http://localhost:3000/movimentacoes/sync
+Content-Type: application/json
+
+{
+  "syncId": "c82b1a44-93e5-4763-9d8e-7313a17f2619",
+  "tipo": "SAIDA",
+  "valor": 850.50,
+  "descricao": "Compra de Fertilizante NPK",
+  "dataMovimento": "2026-02-22T19:00:00.000Z",
+  "formaPagamento": "Boleto",
+  "entidade": "Agropecuária Vale",
+  "centroCustoId": "8b521ee3-d721-4c2f-bbf0-9ade84974803",
+  "agricultorId": "145837fc-ecec-497e-9ef5-7d8c5c4639cc"
+}
+
+###
+
+### Teste de Listagem (Ver se salvou no banco)
+GET http://localhost:3000/movimentacoes
