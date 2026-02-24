@@ -30,8 +30,20 @@ async function listar(req, res) {
   }
 }
 
+async function deletar(req, res) {
+  try {
+    const { id } = req.params;
+
+    const centro = await service.deletarCentroCusto(id);
+
+    res.json(centro);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
 
 module.exports = {
    criar,
-   listar
+   listar,
+   deletar
 };

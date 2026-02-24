@@ -11,6 +11,19 @@ async function criarCentroCusto(data) {
     throw new Error("Nome é obrigatório");
   }
 
+  //Verifica a duplicidade
+const centroExistente = await prisma.centroCusto.findFirst({
+    where: {
+      nome: nome,
+      agricultorId: agricultorId,
+      ativo: true
+    }
+  });
+
+  if (centroExistente) {
+    throw new Error("Já existe um centro de custo com esse nome para este agricultor.");
+  }
+
   return await prisma.centroCusto.create({
     data: {
       nome,
@@ -22,8 +35,22 @@ async function criarCentroCusto(data) {
 
 async function listarCentroCusto() {
   return await prisma.centroCusto.findMany({
+    where: {
+      ativo: true
+    },
     include: {
       agricultor: true
+    }
+  });
+}
+
+// SoftDelete //
+async function deletarCentroCusto(id) {
+  return await prisma.centroCusto.update({
+    where: { id },
+    data: {
+      ativo: false,
+      deletedAt: new Date()
     }
   });
 }
@@ -31,5 +58,6 @@ async function listarCentroCusto() {
 module.exports = {
   listarAgricultores,
   criarCentroCusto,
-  listarCentroCusto
+  listarCentroCusto,
+  deletarCentroCusto
 };
