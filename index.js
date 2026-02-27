@@ -29,10 +29,6 @@ try {
   console.error('Failed to initialize Prisma:', e);
 }
 
-app.get("/", (req, res) => {
-  console.log('GET / request received');
-  res.json({ message: "Backend Cultiva API is running" });
-});
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
