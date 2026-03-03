@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgresql"  
 }
 
 model Agricultor {
@@ -19,4 +19,21 @@ model Agricultor {
   ativo     Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  eventos   Evento[]
+}
+
+model Evento {
+  id        String @id @default (uuid())
+  titulo    String
+  data      DateTime
+  concluido Boolean @default(false)
+  tipo      String
+  
+  agricultorId String
+  agricultor Agricultor @relation(fields: [agricultorId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([agricultorId])
 }
