@@ -11,21 +11,17 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-let prisma;
-try {
-  const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
+const centroCustoRoutes = require("./modules/centro-custo/centroCusto.routes");
 
-  const adapter = new PrismaPg(pool);
-  prisma = new PrismaClient({ adapter });
-  console.log('Prisma Client initialized');
-} catch (e) {
-  console.error('Failed to initialize Prisma:', e);
-}
+
+// Redundant local prisma initialization removed - using centralized client instead.
 
 app.get("/", (req, res) => {
   console.log('GET / request received');
   res.json({ message: "Backend Cultiva API is running" });
 });
+
+app.use(centroCustoRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
@@ -38,3 +34,4 @@ process.on('uncaughtException', (err) => {
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
+

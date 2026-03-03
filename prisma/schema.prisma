@@ -20,6 +20,7 @@ model Agricultor {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   eventos   Evento[]
+  centroCustos CentroCusto[] 
 }
 
 model Evento {
@@ -36,4 +37,23 @@ model Evento {
   updatedAt DateTime @updatedAt
 
   @@index([agricultorId])
+
 }
+
+model CentroCusto {
+  id            String     @id @default(uuid())
+  nome          String
+  descricao     String?
+  ativo         Boolean    @default(true)
+
+  agricultorId  String
+  agricultor    Agricultor @relation(fields: [agricultorId], references: [id])
+
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  deletedAt     DateTime?
+
+  @@index([agricultorId])
+  @@unique([nome, agricultorId])
+}
+
