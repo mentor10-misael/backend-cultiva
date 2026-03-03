@@ -8,4 +8,3 @@ module.exports = defineConfig({
     directUrl: process.env.DIRECT_URL,
   },
 });
-
