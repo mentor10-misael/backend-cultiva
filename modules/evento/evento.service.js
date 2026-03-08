@@ -15,4 +15,42 @@ const criarEvento = async (dados) => {
   return evento;
 };
 
-module.exports = { criarEvento };
+const listarEventos = async (mes, ano) => {
+  
+  const inicio = new Date(ano, mes - 1, 1);
+  const fim = new Date(ano, mes, 1);
+  
+  const eventos = await prisma.evento.findMany({
+    where: {
+      agricultorId: AGRICULTOR_TESTE,
+      data: {
+        gte: inicio,
+        it: fim,
+      },
+    },
+    orderBy: {
+      data: "asc",
+    },
+  });
+
+  return eventos
+};
+
+const atualizarStatusEvento = async (id, concluido) => {
+  const evento = await prisma.evento.update({
+    where: {
+      id: id,
+    },
+    data: {
+      concluido: concluido,
+    },
+  });
+
+  return evento;
+}
+
+module.exports = { 
+  criarEvento,
+  listarEventos,
+  atualizarStatusEvento,
+};
