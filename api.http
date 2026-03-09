@@ -1,8 +1,6 @@
-POST http://localhost:3000/eventos
+PATCH http://localhost:3000/eventos/01ea6cf2-ea71-45fd-95bc-415f18527496/status
 Content-Type: application/json
 
 {
-  "titulo": "Enviar Relatorio a Prefeitura",
-  "data": "2026-03-10T10:00:00.000Z",
-  "tipo": "Fiscal"  
+  "concluido": true
 }

@@ -16,40 +16,42 @@ const criarEvento = async (dados) => {
 };
 
 const listarEventos = async (mes, ano) => {
-  
-  const inicio = new Date(ano, mes - 1, 1);
-  const fim = new Date(ano, mes, 1);
-  
+
+  const where = {
+    agricultorId: AGRICULTOR_TESTE,
+  };
+
+  if (mes && ano) {
+    const inicio = new Date(ano, mes - 1, 1);
+    const fim = new Date(ano, mes, 1);
+
+    where.data = {
+      gte: inicio,
+      lt: fim,
+    };
+  }
+
   const eventos = await prisma.evento.findMany({
-    where: {
-      agricultorId: AGRICULTOR_TESTE,
-      data: {
-        gte: inicio,
-        it: fim,
-      },
-    },
+    where,
     orderBy: {
       data: "asc",
     },
   });
 
-  return eventos
+  return eventos;
 };
 
 const atualizarStatusEvento = async (id, concluido) => {
-  const evento = await prisma.evento.update({
-    where: {
-      id: id,
-    },
-    data: {
-      concluido: concluido,
-    },
+
+  const evento = await prisma.evento.updateMany({
+    where: { id },
+    data: {concluido },
   });
 
   return evento;
-}
+};
 
-module.exports = { 
+module.exports = {
   criarEvento,
   listarEventos,
   atualizarStatusEvento,
