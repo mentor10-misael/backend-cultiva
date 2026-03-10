@@ -1,5 +1,7 @@
 const prisma = require("../../prisma/client");
 
+const { getMoonPhase } = require("../../utils/moon");
+
 const AGRICULTOR_TESTE = "145837fc-ecec-497e-9ef5-7d8c5c4639cc";
 
 const criarEvento = async (dados) => {
@@ -38,8 +40,13 @@ const listarEventos = async (mes, ano) => {
     },
   });
 
-  return eventos;
-};
+ const eventosComLua = eventos.map((evento) => ({
+    ...evento,
+    faseLua: getMoonPhase(evento.data),
+  }));
+
+  return eventosComLua;       
+ };
 
 const atualizarStatusEvento = async (id, concluido) => {
 

@@ -1,6 +1,8 @@
-PATCH http://localhost:3000/eventos/01ea6cf2-ea71-45fd-95bc-415f18527496/status
+POST http://localhost:3000/eventos
 Content-Type: application/json
 
 {
-  "concluido": true
+  "titulo": "Plantio de milho",
+  "data": "2026-03-20T09:00:00.000Z",
+  "tipo": "atividade"
 }
