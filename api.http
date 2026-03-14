@@ -1,8 +1,2 @@
-POST http://localhost:3000/eventos
+GET http://localhost:3000/dashboard/totais?mes=3&ano=2026
 Content-Type: application/json
-
-{
-  "titulo": "Plantio de milho",
-  "data": "2026-03-20T09:00:00.000Z",
-  "tipo": "atividade"
-}
