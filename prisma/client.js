@@ -11,4 +11,8 @@ if (!prisma) {
   console.log('Prisma Client initialized');
 }
 
+<<<<<<< HEAD
 module.exports = prisma;
+=======
+module.exports = prisma;
+>>>>>>> feature/movimentacao-financeira
