@@ -3,19 +3,37 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgresql"  
 }
 
 model Agricultor {
-  id          String        @id @default(uuid())
-  nome        String
-  email       String        @unique
-  ativo       Boolean       @default(true)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  CentroCusto CentroCusto[]
+  id            String         @id @default(uuid())
+  nome          String
+  email         String         @unique
+  ativo         Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
+  // Relações combinadas (suas e da main)
+  centroCustos  CentroCusto[] 
+  eventos       Evento[]
   movimentacoes Movimentacao[]
+}
+
+model Evento {
+  id           String     @id @default(uuid())
+  titulo       String
+  data         DateTime
+  concluido    Boolean    @default(false)
+  tipo         String
+  
+  agricultorId String
+  agricultor   Agricultor @relation(fields: [agricultorId], references: [id])
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([agricultorId])
 }
 
 model CentroCusto {
@@ -23,35 +41,38 @@ model CentroCusto {
   nome         String
   descricao    String?
   ativo        Boolean    @default(true)
-  agricultorId String
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime
-  deletedAt    DateTime?
-  Agricultor   Agricultor @relation(fields: [agricultorId], references: [id])
 
+  agricultorId String
+  agricultor   Agricultor @relation(fields: [agricultorId], references: [id])
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  deletedAt    DateTime?
+
+  // Relação da sua branch
   movimentacoes Movimentacao[]
 
-  @@unique([nome, agricultorId])
   @@index([agricultorId])
+  @@unique([nome, agricultorId])
 }
 
 model Movimentacao {
-  id               String       @id @default(uuid())
-  syncId           String       @unique 
-  tipo             TipoMovimento
-  valor            Decimal      @db.Decimal(10, 2)
-  descricao        String
-  dataMovimento    DateTime
-  formaPagamento   String       
-  entidade         String?      
+  id             String        @id @default(uuid())
+  syncId         String        @unique 
+  tipo           TipoMovimento
+  valor          Decimal       @db.Decimal(10, 2)
+  descricao      String
+  dataMovimento  DateTime
+  formaPagamento String
+  entidade       String?       
   
-  centroCustoId    String
-  CentroCusto      CentroCusto  @relation(fields: [centroCustoId], references: [id])
+  centroCustoId  String
+  CentroCusto    CentroCusto   @relation(fields: [centroCustoId], references: [id])
   
-  agricultorId     String
-  Agricultor       Agricultor   @relation(fields: [agricultorId], references: [id])
+  agricultorId   String
+  Agricultor     Agricultor    @relation(fields: [agricultorId], references: [id])
   
-  criadoEm         DateTime     @default(now())
+  criadoEm       DateTime      @default(now())
 
   @@map("movimentacoes")
 }

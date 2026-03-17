@@ -5,6 +5,8 @@ const movimentacaoRoutes = require("./modules/movimentacao/movimentacao.routes")
 const pg = require('pg');
 const { PrismaPg } = require('@prisma/adapter-pg');
 const { PrismaClient } = require("@prisma/client");
+const centroCustoRoutes = require("./modules/centro-custo/centroCusto.routes");
+const eventoRoutes = require("./modules/evento/evento.routes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,18 +19,16 @@ app.get("/", (req, res) => {
 });
 
 app.use("/movimentacoes", movimentacaoRoutes);
+//peruguntar sobre "app.use(centroCustoRoutes)" em relação a "app.use("/eventos", eventoRoutes)" se há conflitos
+app.use(centroCustoRoutes);
+app.use("/eventos", eventoRoutes);
 
 let prisma;
 try {
   const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
-
-  const adapter = new PrismaPg(pool);
-  prisma = new PrismaClient({ adapter });
-  console.log('Prisma Client initialized');
-} catch (e) {
-  console.error('Failed to initialize Prisma:', e);
+} catch (error) {
+  console.error("Erro na conexão com o banco de dados:", error);
 }
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
@@ -41,3 +41,4 @@ process.on('uncaughtException', (err) => {
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
+
