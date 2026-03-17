@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,47 +7,77 @@ datasource db {
 }
 
 model Agricultor {
-  id        String   @id @default(uuid())
-  nome      String
-  email     String   @unique
-  ativo     Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  eventos   Evento[]
-  centroCustos CentroCusto[] 
+  id            String         @id @default(uuid())
+  nome          String
+  email         String         @unique
+  ativo         Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  // Relações combinadas (suas e da main)
+  centroCustos  CentroCusto[] 
+  eventos       Evento[]
+  movimentacoes Movimentacao[]
 }
 
 model Evento {
-  id        String @id @default (uuid())
-  titulo    String
-  data      DateTime
-  concluido Boolean @default(false)
-  tipo      String
+  id           String     @id @default(uuid())
+  titulo       String
+  data         DateTime
+  concluido    Boolean    @default(false)
+  tipo         String
   
   agricultorId String
-  agricultor Agricultor @relation(fields: [agricultorId], references: [id])
+  agricultor   Agricultor @relation(fields: [agricultorId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 
   @@index([agricultorId])
-
 }
 
 model CentroCusto {
-  id            String     @id @default(uuid())
-  nome          String
-  descricao     String?
-  ativo         Boolean    @default(true)
+  id           String     @id @default(uuid())
+  nome         String
+  descricao    String?
+  ativo        Boolean    @default(true)
 
-  agricultorId  String
-  agricultor    Agricultor @relation(fields: [agricultorId], references: [id])
+  agricultorId String
+  agricultor   Agricultor @relation(fields: [agricultorId], references: [id])
 
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  deletedAt     DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  deletedAt    DateTime?
+
+  // Relação da sua branch
+  movimentacoes Movimentacao[]
 
   @@index([agricultorId])
   @@unique([nome, agricultorId])
 }
 
+model Movimentacao {
+  id             String        @id @default(uuid())
+  syncId         String        @unique 
+  tipo           TipoMovimento
+  valor          Decimal       @db.Decimal(10, 2)
+  descricao      String
+  dataMovimento  DateTime
+  formaPagamento String
+  entidade       String?       
+  
+  centroCustoId  String
+  CentroCusto    CentroCusto   @relation(fields: [centroCustoId], references: [id])
+  
+  agricultorId   String
+  Agricultor     Agricultor    @relation(fields: [agricultorId], references: [id])
+  
+  criadoEm       DateTime      @default(now())
+
+  @@map("movimentacoes")
+}
+
+enum TipoMovimento {
+  ENTRADA
+  SAIDA
+}
