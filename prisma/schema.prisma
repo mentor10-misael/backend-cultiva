@@ -14,7 +14,6 @@ model Agricultor {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
-  // Relações combinadas (suas e da main)
   centroCustos  CentroCusto[] 
   eventos       Evento[]
   movimentacoes Movimentacao[]
@@ -49,7 +48,6 @@ model CentroCusto {
   updatedAt    DateTime   @updatedAt
   deletedAt    DateTime?
 
-  // Relação da sua branch
   movimentacoes Movimentacao[]
 
   @@index([agricultorId])
