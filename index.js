@@ -1,19 +1,23 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+<<<<<<< HEAD
 const movimentacaoRoutes = require("./modules/movimentacao/movimentacao.routes");
 const pg = require('pg');
 const { PrismaPg } = require('@prisma/adapter-pg');
 const { PrismaClient } = require("@prisma/client");
+=======
+>>>>>>> feature/eventos
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORTA || 3000;
 
 app.use(cors());
 app.use(express.json());
 
 <<<<<<< HEAD
 const centroCustoRoutes = require("./modules/centro-custo/centroCusto.routes");
+<<<<<<< HEAD
 =======
 app.get("/", (req, res) => {
   res.json({ message: "Backend Cultiva API is running" });
@@ -30,7 +34,21 @@ try {
 // Redundant local prisma initialization removed - using centralized client instead.
 
 
+=======
+const eventoRoutes = require("./modules/evento/evento.routes");
+const dashboardRoutes = require("./modules/dashboard/dashboard.routes");
+
+// Redundant local prisma initialization removed - using centralized client instead.
+
+app.get("/", (req, res) => {
+  console.log('GET / request received');
+  res.json({ message: "Backend Cultiva API  roda aqui!!!" });
+});
+//perguntar sobre "app.use(centroCustoRoutes)" em relação a "app.use("/eventos", eventoRoutes)" se há conflitos
+>>>>>>> feature/eventos
 app.use(centroCustoRoutes);
+app.use("/eventos", eventoRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

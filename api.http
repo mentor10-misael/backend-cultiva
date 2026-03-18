@@ -1,0 +1,2 @@
+GET http://localhost:3000/dashboard/totais?mes=3&ano=2026
+Content-Type: application/json
